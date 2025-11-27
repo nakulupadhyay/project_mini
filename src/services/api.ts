@@ -1,5 +1,5 @@
-const API_URL = 'http://localhost:5000/api';
-
+// const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_URL = 'https://project-mini-te3w.onrender.com/';
 // Get token from localStorage
 const getToken = () => localStorage.getItem('token');
 
