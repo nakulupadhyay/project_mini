@@ -12,7 +12,7 @@ const app = express();
 
 // Middleware
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  origin: process.env.CORS_ORIGIN || ['http://localhost:3000', 'http://localhost:5000'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -81,17 +81,22 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/mindca
 
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 30000,
+  socketTimeoutMS: 45000,
+  family: 4
 })
 .then(() => {
   console.log('✅ Connected to MongoDB');
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 MindCare AI Backend running on port ${PORT}`);
-    console.log(`📍 API Base URL: http://localhost:${PORT}/api`);
+    console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`📍 MongoDB: Connected`);
   });
 })
 .catch(err => {
   console.error('❌ MongoDB connection error:', err);
+  process.exit(1);
 });
 
 module.exports = app;
