@@ -2,7 +2,8 @@
   "buildCommand": "npm run build",
   "outputDirectory": "build",
   "env": {
-    "REACT_APP_API_URL": "https://your-backend-url.com/api"
+    "REACT_APP_API_URL": "https://project-mini-te3w.onrender.com/api",
+    "REACT_APP_ENV": "production"
   },
   "headers": [
     {
