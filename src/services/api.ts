@@ -1,19 +1,31 @@
 // Determine API URL based on environment
 let API_URL = 'http://localhost:5000/api'; // default for local dev
 
-// In production, use the Render backend
-if (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-  API_URL = 'https://project-mini-te3w.onrender.com/api';
+// Check if running in browser and on Vercel domain
+if (typeof window !== 'undefined') {
+  const hostname = window.location.hostname;
+  const protocol = window.location.protocol;
+  
+  console.log('🌐 Current hostname:', hostname);
+  console.log('🔒 Protocol:', protocol);
+  
+  // If on Vercel or any non-localhost domain, use production backend
+  if (hostname === 'health-care-mu-six.vercel.app' || 
+      hostname.includes('vercel.app') || 
+      (hostname !== 'localhost' && hostname !== '127.0.0.1')) {
+    API_URL = 'https://project-mini-te3w.onrender.com/api';
+    console.log('✅ Auto-switched to production backend');
+  }
 }
 
-// Allow override from environment variable
+// Allow override from environment variable (highest priority)
 if (process.env.REACT_APP_API_URL) {
   API_URL = process.env.REACT_APP_API_URL;
+  console.log('✅ Using environment variable override');
 }
 
 console.log('🔗 Environment:', process.env.NODE_ENV);
-console.log('🔗 Hostname:', typeof window !== 'undefined' ? window.location.hostname : 'N/A');
-console.log('🔗 API URL configured:', API_URL);
+console.log('🔗 Final API URL:', API_URL);
 
 // Get token from localStorage
 const getToken = () => localStorage.getItem('token');
