@@ -81,26 +81,7 @@ app.use('/api/therapy-sessions', therapyRoutes);
 app.use('/api/caregivers', caregiverRoutes);
 app.use('/api/ai', aiRoutes);
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ 
-    error: 'Route not found',
-    message: `The endpoint ${req.method} ${req.path} does not exist`,
-    availableEndpoints: {
-      root: '/',
-      health: '/health',
-      auth: '/api/auth',
-      user: '/api/user',
-      emotions: '/api/emotions',
-      alerts: '/api/alerts',
-      therapy: '/api/therapy-sessions',
-      caregivers: '/api/caregivers',
-      ai: '/api/ai'
-    }
-  });
-});
-
-// Root route
+// Root route (MUST come BEFORE 404 handler)
 app.get('/', (req, res) => {
   res.json({ 
     message: 'Welcome to MindCare AI Backend',
@@ -128,6 +109,25 @@ app.get('/health', (req, res) => {
     status: 'healthy', 
     service: 'MindCare AI Backend',
     timestamp: new Date().toISOString()
+  });
+});
+
+// 404 handler (MUST come LAST)
+app.use((req, res) => {
+  res.status(404).json({ 
+    error: 'Route not found',
+    message: `The endpoint ${req.method} ${req.path} does not exist`,
+    availableEndpoints: {
+      root: '/',
+      health: '/health',
+      auth: '/api/auth',
+      user: '/api/user',
+      emotions: '/api/emotions',
+      alerts: '/api/alerts',
+      therapy: '/api/therapy-sessions',
+      caregivers: '/api/caregivers',
+      ai: '/api/ai'
+    }
   });
 });
 
