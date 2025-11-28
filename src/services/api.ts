@@ -1,5 +1,7 @@
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
+console.log('🔗 API URL configured:', API_URL);
+
 // Get token from localStorage
 const getToken = () => localStorage.getItem('token');
 
@@ -7,21 +9,31 @@ const getToken = () => localStorage.getItem('token');
 export const api = {
   // Auth
   register: async (data: { email: string; password: string; name: string; careMode: string }) => {
+    console.log('📤 Registering user:', data.email);
     const res = await fetch(`${API_URL}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
-    return res.json();
+    const result = await res.json();
+    if (!res.ok) {
+      console.error('❌ Registration failed:', result);
+    }
+    return result;
   },
 
   login: async (data: { email: string; password: string }) => {
+    console.log('📤 Logging in user:', data.email);
     const res = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
-    return res.json();
+    const result = await res.json();
+    if (!res.ok) {
+      console.error('❌ Login failed:', result);
+    }
+    return result;
   },
 
   // Emotions

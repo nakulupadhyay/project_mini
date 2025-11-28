@@ -12,9 +12,24 @@ const app = express();
 
 // Middleware
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN || ['http://localhost:3000', 'http://localhost:5000'],
+  origin: function(origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://localhost:5000',
+      'https://health-care-mu-six.vercel.app',
+      'https://project-mini-te3w.onrender.com',
+      process.env.CORS_ORIGIN
+    ].filter(Boolean);
+    
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.warn(`CORS blocked origin: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 };
 app.use(cors(corsOptions));
