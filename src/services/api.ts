@@ -1,6 +1,7 @@
 // API URL Configuration
 // For Vercel production: use Render backend
 // For local development: use localhost
+// Build timestamp: 2025-11-28T00:00:00Z
 
 const getApiUrl = (): string => {
   // Always use production backend URL - no localhost fallback
@@ -13,6 +14,7 @@ console.log('========================================');
 console.log('🔗 API SERVICE INITIALIZED');
 console.log('📍 API URL:', API_URL);
 console.log('🌐 Frontend Hostname:', typeof window !== 'undefined' ? window.location.hostname : 'N/A');
+console.log('✅ Fresh build deployed');
 console.log('========================================');
 
 // Get token from localStorage
