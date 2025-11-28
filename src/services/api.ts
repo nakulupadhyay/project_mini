@@ -24,16 +24,25 @@ export const api = {
 
   login: async (data: { email: string; password: string }) => {
     console.log('📤 Logging in user:', data.email);
-    const res = await fetch(`${API_URL}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-    const result = await res.json();
-    if (!res.ok) {
-      console.error('❌ Login failed:', result);
+    console.log('🔗 Requesting:', `${API_URL}/auth/login`);
+    try {
+      const res = await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      console.log('📥 Response status:', res.status, res.statusText);
+      const result = await res.json();
+      if (!res.ok) {
+        console.error('❌ Login failed - Status:', res.status, 'Error:', result);
+      } else {
+        console.log('✅ Login successful');
+      }
+      return result;
+    } catch (err) {
+      console.error('❌ Login network error:', err);
+      throw err;
     }
-    return result;
   },
 
   // Emotions

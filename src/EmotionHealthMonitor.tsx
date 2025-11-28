@@ -158,11 +158,13 @@ const EmotionHealthMonitor = () => {
     try {
       let response;
       if (authMode === 'login') {
+        console.log('🔐 Attempting login...');
         response = await api.login({
           email: authForm.email,
           password: authForm.password
         });
       } else {
+        console.log('📝 Attempting registration...');
         response = await api.register({
           email: authForm.email,
           password: authForm.password,
@@ -171,7 +173,10 @@ const EmotionHealthMonitor = () => {
         });
       }
 
+      console.log('📨 Response received:', response);
+
       if (response.token) {
+        console.log('✅ Authentication successful!');
         localStorage.setItem('token', response.token);
         localStorage.setItem('user', JSON.stringify(response.user));
         setIsAuthenticated(true);
@@ -179,11 +184,13 @@ const EmotionHealthMonitor = () => {
         setAuthForm({ email: '', password: '', name: '' });
         loadUserData();
       } else {
-        alert(response.error || 'Authentication failed');
+        const errorMsg = response.error || response.message || 'Authentication failed. Please check your credentials.';
+        console.error('❌ Auth error:', errorMsg);
+        alert(errorMsg);
       }
     } catch (error) {
-      console.error('Auth error:', error);
-      alert('Authentication failed. Please try again.');
+      console.error('❌ Auth network error:', error);
+      alert(`Connection error: ${error instanceof Error ? error.message : 'Unable to reach the server. Please check if the backend is running.'}`);
     }
   };
 
